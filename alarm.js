@@ -1,11 +1,17 @@
 var cp = require('child_process');
 
 
-var alarm_time = "5:00 am";
+
+var alarm_time = "22:00";
 var getAlarmDate = function(){
-	var date = new Date((new Date()).getTime()+(1000*60*60*24));
+	var date = new Date();
 //	console.log("getAlarmDate:"+date);
 	var justDate = (date.getMonth()+1)+"/"+(date.getDate())+"/"+date.getFullYear()+" "+alarm_time;
+	date = new Date(justDate);
+	if(date.getTime()<(new Date()).getTime()){
+		date = new Date((new Date()).getTime()+(1000*60*60*24));
+		justDate = (date.getMonth()+1)+"/"+(date.getDate())+"/"+date.getFullYear()+" "+alarm_time;
+	}
 	return justDate;
 }
 
@@ -36,7 +42,20 @@ var alarm = {
  },
  timeout:null,
  alarm:(new Date(getAlarmDate())).getTime()
-}
+};
 
+process.argv.forEach(function (val, index, array) {
+  	console.log(index + ': ' + val);
+	if((val.split("=")[0]).trim().toUpperCase() == "ALARM"){
+		alarm_time = val.split("=")[1];
+		console.log("alarm time: "+alarm_time+" date:"+new Date(getAlarmDate()));
+		if((new Date(getAlarmDate())) == "Invalid Date"){
+			console.log("Please give a valid time");
+			throw new Error("Invalid Date");
+		}else{
+			alarm.alarm = getAlarmDate();
+		}
+	}
+});
 
 alarm.check();
