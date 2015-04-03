@@ -5,4 +5,4 @@ This application accepts a command line argument of alarm=[TIME]
 where [TIME] is a hour:minute combination on the 24hr clock.
 
 
-Reminder to mysel, this is for NODE!
+Reminder to myself, this is for NODE!
